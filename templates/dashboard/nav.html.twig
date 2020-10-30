@@ -38,7 +38,7 @@
                 {# PHP would compare all the properties of the objects #}
                 {% if s is not same as(store) %}
                 <li>
-                  <a href="{{ path('fos_user_profile_show', { store: s.id }) }}">
+                  <a href="{{ path('dashboard', { store: s.id }) }}">
                     {{ s.name }}
                   </a>
                 </li>
@@ -67,7 +67,7 @@
                 {# PHP would compare all the properties of the objects #}
                 {% if r is not same as(restaurant) %}
                 <li>
-                  <a href="{{ path('fos_user_profile_show', { restaurant: r.id }) }}">
+                  <a href="{{ path('dashboard', { restaurant: r.id }) }}">
                     {{ r.name }}
                   </a>
                 </li>

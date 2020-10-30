@@ -77,9 +77,10 @@ class DashboardController extends AbstractController
         if ($request->query->has($queryKey)) {
             foreach ($items as $item) {
                 if ($item->getId() === $request->query->getInt($queryKey)) {
+
                     $request->getSession()->set($sessionKey, $item->getId());
 
-                    return $this->redirectToRoute('fos_user_profile_show');
+                    return $this->redirectToRoute('dashboard');
                 }
             }
 
