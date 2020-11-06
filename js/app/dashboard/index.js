@@ -14,7 +14,7 @@ import Navbar from './components/Navbar'
 import 'react-phone-number-input/style.css'
 import './dashboard.scss'
 
-import { taskListUtils } from '../coopcycle-frontend-js/lastmile/redux'
+import { taskUtils, taskListUtils } from '../coopcycle-frontend-js/lastmile/redux'
 
 let mapLoadedResolve, navbarLoadedResolve, dashboardLoadedResolve, initMapResolve
 
@@ -30,17 +30,14 @@ function start() {
   let date = moment(dashboardEl.dataset.date)
   let tasks = JSON.parse(dashboardEl.dataset.tasks)
 
-  let taskEntities = new Map()
-  for (let task of tasks) {
-    taskEntities.set(task["@id"], task)
-  }
+  let taskEntities = taskUtils.upsertTasks({}, tasks)
 
   // normalize data, keep only task ids, instead of the whole objects
   let taskLists = JSON.parse(dashboardEl.dataset.taskLists)
   taskLists = taskLists.map(taskList => taskListUtils.replaceTasksWithIds(taskList))
-  let taskListEntities = new Map()
+  let taskListEntities = {}
   for (let taskList of taskLists) {
-    taskListEntities.set(taskList[taskListUtils.taskListKey], taskList)
+    taskListEntities[taskList[taskListUtils.taskListKey]] = taskList
   }
 
   let preloadedState = {
@@ -48,10 +45,10 @@ function start() {
       date,
       entities: {
         tasks: {
-          items: taskEntities
+          byId: taskEntities
         },
         taskLists: {
-          items: taskListEntities
+          byUsername: taskListEntities
         }
       }
     },
